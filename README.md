@@ -1,7 +1,6 @@
 # Lupianus Client Prototype
 
-Ionic based client prototype
-
+[Ionic](http://ionicframework.com/) based hybrid mobile apps with HTML5 prototype
 
 ## Licence
 
