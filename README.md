@@ -6,6 +6,10 @@
 
 Work in progreess: [polypodes.github.io/LupianusProtoClient](http://quirktools.com/screenfly/#u=http%3A//polypodes.github.io/LupianusProtoClient/client/www/index.html%23/app/carte&w=375&h=667&a=37)
 
+## TODO-List
+
+See [TODO.md](TODO.md)
+
 ## Cordova / Ionic
 
 Client app generated via `ionic start client sidemenu`
