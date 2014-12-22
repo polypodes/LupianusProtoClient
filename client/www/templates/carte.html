@@ -3,7 +3,7 @@
     <ion-list>
       <ion-item ng-repeat="parcours in carte">
         <a class="item item-thumbnail-left" href="#/app/carte/{{parcours.id}}">
-          <img src="{{parcours.src}}">
+          <img ng-src="{{parcours.src}}">
           <h2>{{parcours.title}}</h2>
           <p>Un parcours du CIAP de Rezé</p>
         </a>
