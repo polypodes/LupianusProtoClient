@@ -4,7 +4,7 @@
 
 ## Demo
 
-Work in progreess: [polypodes.github.io/LupianusProtoClient](http://polypodes.github.io/LupianusProtoClient/)
+Work in progreess: [polypodes.github.io/LupianusProtoClient](http://quirktools.com/screenfly/#u=http%3A//polypodes.github.io/LupianusProtoClient/client/www/index.html%23/app/carte&w=375&h=667&a=37)
 
 ## Cordova / Ionic
 
