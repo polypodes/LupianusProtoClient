@@ -1,0 +1,12 @@
+{
+  "lastSync": "2015-12-22T16:32:17.311Z",
+  "length": 5,
+  "carte":
+  {
+    "parcours1" : { "title": "Parcours 1", "id": 1, "src": "http://lorempixel.com/160/160/city" },
+    "parcours2" : { "title": "Parcours 2", "id": 2, "src": "http://lorempixel.com/160/160/nature" },
+    "parcours3" : { "title": "Parcours 3", "id": 3, "src": "http://lorempixel.com/160/160/people" },
+    "parcours4" : { "title": "Parcours 4", "id": 4, "src": "http://lorempixel.com/160/160/nightlife" },
+    "parcours5" : { "title": "Parcours 5", "id": 5, "src": "http://lorempixel.com/160/160/transport" }
+  }
+}
