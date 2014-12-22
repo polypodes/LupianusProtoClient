@@ -35,6 +35,21 @@ https://cordova.apache.org/docs/en/edge/guide_platforms_android_index.md.html
 For more help use `ionic --help` or visit the Ionic docs: http://ionicframework.com/docs
 
 
+## Github-Pages auto-publication based on `master` commits
+
+
+Set up your `.git/config` file this way:
+
+```
+[remote "origin"]
+	url = git@github.com:polypodes/LupianusProtoClient.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+	push = +refs/heads/master:refs/heads/gh-pages
+	push = +refs/heads/master:refs/heads/master
+```
+
+Then `git push` will keep `gh-pages` branch mirrored on `master`.
+
 ## Licence
 
 [MIT](LICENSE)
