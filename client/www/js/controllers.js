@@ -33,16 +33,16 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
+.controller('CarteCtrl', function($scope) {
+  $scope.carte = [
+    { title: 'Parcours 1', id: 1 },
+    { title: 'Parcours 2', id: 2 },
+    { title: 'Parcours 3', id: 3 },
+    { title: 'Parcours 4', id: 4 },
+    { title: 'Parcours 5', id: 5 },
+    { title: 'Parcours 6', id: 6 }
   ];
 })
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
+.controller('ParcoursCtrl', function($scope, $stateParams) {
 });
