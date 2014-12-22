@@ -15,7 +15,7 @@ angular.module('starter.controllers', ['LocalForageModule', 'angularMoment'])
   $localForageProvider.setNotify(true, true); // itemSet, itemRemove;
 }])
 
-.controller('AppCtrl', ['$scope', '$localForage', '$ionicModal', '$timeout', 'moment', function($scope, $localForage, $ionicModal, $timeout, moment) {
+.controller('AppCtrl', ['$scope', '$localForage', '$ionicModal', '$timeout', 'moment', '$http', function($scope, $localForage, $ionicModal, $timeout, moment, $http) {
   // Form data for the login modal
   $scope.syncData = {};
   $scope.dateFormat = 'dddd Do MMMM YYYY, H:mm:ss';
@@ -38,7 +38,7 @@ angular.module('starter.controllers', ['LocalForageModule', 'angularMoment'])
     $scope.modal.show();
     $localForage.getItem('lastSync').then(function(data) {
       $scope.lastSync = data;
-      if(m($scope.lastSync).isValid()) {
+      if(moment($scope.lastSync).isValid()) {
         $scope.lastSyncDate = moment($scope.lastSync).format($scope.dateFormat, $scope.dateLang);
       }
     });
@@ -52,19 +52,64 @@ angular.module('starter.controllers', ['LocalForageModule', 'angularMoment'])
     });
   };
 
+  $scope.dumpData = {};
+  $scope.dump = function() {
+    var count = window.localStorage.length;
+    $scope.dumpData = {};
+    for (var i = 0; i < count; i++) {
+      try {
+        $scope.dumpData[localStorage.key(i)] = JSON.parse(this.getItem(localStorage.key(i)));
+      } catch (e) {
+        $scope.dumpData[localStorage.key(i)] = localStorage.getItem(localStorage.key(i));
+      }
+    }
+    console.log('dumped', $scope.dumpData)
+  };
+
+  $scope.restore = function() {
+    console.log('restoring elements from dumpData', $scope.dumpData);
+    $localForage.clear();
+    for(var key in $scope.dumpData.options){
+      // check also if property is not inherited from prototype
+      console.log('found', $scope.dmpData.options[key]);
+      if ($scope.dumpData.options.hasOwnProperty(key)) {
+        $localForage.setItem(key, $scope.dumpData.options[key]).then(function() {
+          $localForage.keys().then(function(data) {
+            console.log('restored:',data);
+          });
+        });
+      }
+    }
+  };
+
   // Perform the sync action when the user submits the sync form
   $scope.doSync = function() {
+    $scope.dump();
+
+    var remote = 'http://www.corsproxy.com/polypodes.github.io/LupianusProtoClient/fake/data.json';
+    $http.get(remote).
+        success(function(data, status, headers, config) {
+          $localForage.clear();
+          for(var key in data.carte){
+            $localForage.setItem(key, JSON.stringify(data.carte[key])).then(function() {
+              //...
+            });
+          }
+        }).
+        error(function(data, status, headers, config) {
+          console.log('remote error', [data, status, headers, config]);
+          // called asynchronously if an error occurs
+          // or server returns response with an error status.
+        });
+
     var newSync = new Date();
     $localForage.setItem('lastSync', newSync).then(function() {
       $scope.lastSync = newSync;
       $scope.lastSyncDate = moment($scope.lastSync).format($scope.dateFormat, $scope.dateLang);
     });
-    $localForage.setItem('user','Olivier Combe').then(function() {
-      console.log('setItem');
+    $localForage.setItem('user','Me').then(function() {
       $localForage.getItem('user').then(function(data) {
-        console.log('getItem');
         $scope.syncData = data;
-        console.log('Doing sync', $scope.syncData);
       });
     });
 
@@ -76,15 +121,24 @@ angular.module('starter.controllers', ['LocalForageModule', 'angularMoment'])
   };
 }])
 
-.controller('CarteCtrl', function($scope) {
-  $scope.carte = [
-    { title: 'Parcours 1', id: 1, src: 'http://lorempixel.com/160/160/city' },
-    { title: 'Parcours 2', id: 2, src: 'http://lorempixel.com/160/160/nature' },
-    { title: 'Parcours 3', id: 3, src: 'http://lorempixel.com/160/160/people' },
-    { title: 'Parcours 4', id: 4, src: 'http://lorempixel.com/160/160/nightlife' },
-    { title: 'Parcours 5', id: 5, src: 'http://lorempixel.com/160/160/transport' }
-  ];
-})
+.controller('CarteCtrl', ['$scope', '$localForage', function($scope, $localForage) {
+      /*
+  $scope.carte = {
+    "parcours1": { title: 'Parcours 1', id: 1, src: 'http://lorempixel.com/160/160/city' },
+    "parcours2": { title: 'Parcours 2', id: 2, src: 'http://lorempixel.com/160/160/nature' },
+    "parcours3": { title: 'Parcours 3', id: 3, src: 'http://lorempixel.com/160/160/people' },
+    "parcours4": { title: 'Parcours 4', id: 4, src: 'http://lorempixel.com/160/160/nightlife' },
+    "parcours5": { title: 'Parcours 5', id: 5, src: 'http://lorempixel.com/160/160/transport' }
+  };
+  */
+  $scope.carte = [];
+  $localForage.iterate(function(value, key) {
+    $scope.carte[key] = JSON.parse(value);
+  }, function() {
+    console.log('Iteration has completed', $scope.carte);
+    $scope.$apply();
+  });
+}])
 
 .controller('ParcoursCtrl', function($scope, $stateParams) {
   $scope.parcours =
