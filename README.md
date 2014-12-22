@@ -3,6 +3,10 @@
 [Ionic](http://ionicframework.com/) based hybrid HTML5 app prototype
 
 
+## Demo
+
+Work in progreess: [polypodes.github.io/LupianusProtoClient](http://polypodes.github.io/LupianusProtoClient/)
+
 ## Cordova / Ionic
 
 Client app generated via `ionic start client sidemenu`
