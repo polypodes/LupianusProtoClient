@@ -38,9 +38,9 @@ angular.module('starter.controllers', ['LocalForageModule', 'angularMoment'])
     $scope.modal.show();
     $localForage.getItem('lastSync').then(function(data) {
       $scope.lastSync = data;
-      console.log($scope.lastSync);
-      $scope.lastSyncDate = moment($scope.lastSync).format($scope.dateFormat, $scope.dateLang);
-      console.log('lastSync', $scope.lastSyncDate);
+      if(m($scope.lastSync).isValid()) {
+        $scope.lastSyncDate = moment($scope.lastSync).format($scope.dateFormat, $scope.dateLang);
+      }
     });
   };
 
