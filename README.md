@@ -2,7 +2,6 @@
 
 [Ionic](http://ionicframework.com/) based hybrid HTML5 app prototype
 
-
 ## Demo
 
 Work in progreess: [polypodes.github.io/LupianusProtoClient](http://polypodes.github.io/LupianusProtoClient/)
