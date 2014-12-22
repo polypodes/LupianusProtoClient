@@ -91,7 +91,7 @@ angular.module('starter.controllers', ['LocalForageModule', 'angularMoment'])
         success(function(data, status, headers, config) {
           $localForage.clear();
           for(var key in data.carte){
-            $localForage.setItem(key, JSON.stringify(data.carte[key])).then(function() {
+            $localForage.setItem(key, data.carte[key]).then(function() {
               //...
             });
           }
@@ -122,22 +122,23 @@ angular.module('starter.controllers', ['LocalForageModule', 'angularMoment'])
 }])
 
 .controller('CarteCtrl', ['$scope', '$localForage', function($scope, $localForage) {
-      /*
-  $scope.carte = {
-    "parcours1": { title: 'Parcours 1', id: 1, src: 'http://lorempixel.com/160/160/city' },
-    "parcours2": { title: 'Parcours 2', id: 2, src: 'http://lorempixel.com/160/160/nature' },
-    "parcours3": { title: 'Parcours 3', id: 3, src: 'http://lorempixel.com/160/160/people' },
-    "parcours4": { title: 'Parcours 4', id: 4, src: 'http://lorempixel.com/160/160/nightlife' },
-    "parcours5": { title: 'Parcours 5', id: 5, src: 'http://lorempixel.com/160/160/transport' }
-  };
-  */
+  /*
+   $scope.carte = [
+   "parcours1": { title: 'Parcours 1', id: 1, src: 'http://lorempixel.com/160/160/city' },
+   "parcours2": { title: 'Parcours 2', id: 2, src: 'http://lorempixel.com/160/160/nature' },
+   "parcours3": { title: 'Parcours 3', id: 3, src: 'http://lorempixel.com/160/160/people' },
+   "parcours4": { title: 'Parcours 4', id: 4, src: 'http://lorempixel.com/160/160/nightlife' },
+   "parcours5": { title: 'Parcours 5', id: 5, src: 'http://lorempixel.com/160/160/transport' }
+   ];
+   */
   $scope.carte = [];
   $localForage.iterate(function(value, key) {
-    $scope.carte[key] = JSON.parse(value);
+    $scope.carte.push(value);
   }, function() {
     console.log('Iteration has completed', $scope.carte);
     $scope.$apply();
   });
+
 }])
 
 .controller('ParcoursCtrl', function($scope, $stateParams) {
