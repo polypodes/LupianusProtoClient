@@ -31,6 +31,7 @@ angular.module('starter.controllers', ['LocalForageModule', 'angularMoment'])
   // Triggered in the login modal to close it
   $scope.closeSync = function() {
     $scope.modal.hide();
+    window.location.reload();
   };
 
   // Open the sync modal
@@ -136,7 +137,6 @@ angular.module('starter.controllers', ['LocalForageModule', 'angularMoment'])
     $scope.carte.push(value);
   }, function() {
     console.log('Iteration has completed', $scope.carte);
-    $scope.$apply();
   });
 
 }])
