@@ -35,14 +35,20 @@ angular.module('starter.controllers', [])
 
 .controller('CarteCtrl', function($scope) {
   $scope.carte = [
-    { title: 'Parcours 1', id: 1 },
-    { title: 'Parcours 2', id: 2 },
-    { title: 'Parcours 3', id: 3 },
-    { title: 'Parcours 4', id: 4 },
-    { title: 'Parcours 5', id: 5 },
-    { title: 'Parcours 6', id: 6 }
+    { title: 'Parcours 1', id: 1, src: 'http://lorempixel.com/160/160/city' },
+    { title: 'Parcours 2', id: 2, src: 'http://lorempixel.com/160/160/nature' },
+    { title: 'Parcours 3', id: 3, src: 'http://lorempixel.com/160/160/people' },
+    { title: 'Parcours 4', id: 4, src: 'http://lorempixel.com/160/160/nightlife' },
+    { title: 'Parcours 5', id: 5, src: 'http://lorempixel.com/160/160/transport' }
   ];
 })
 
 .controller('ParcoursCtrl', function($scope, $stateParams) {
+  $scope.parcours =
+  {
+    title: 'Parcours 1',
+    id: 1,
+    fullSrc: 'http://lorempixel.com/540/304/',
+    text: "This is a \"Facebook\" styled Card. The header is created from a Thumbnail List item, the content is from a card-body consisting of an image and paragraph text. The footer consists of tabs, icons aligned left, within the card-footer."
+  };
 });

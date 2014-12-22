@@ -1,5 +1,42 @@
-<ion-view view-title="Playlist">
+<ion-view view-title="Parcours">
   <ion-content>
-    <h1>Parcours</h1>
+        <h1 class="text-center">{{parcours.title}}</h1>
+    <div class="list card">
+      <a class="item item-icon-left positive" href="#">
+        <i class="icon ion-music-note"></i>
+        Ecouter la visite guidée
+      </a>
+      <h2 class="item item-icon-left">
+        <i class="icon ion-eye"></i>
+        Comprendre :
+      </h2>
+
+      <div class="item item-body">
+        <img class="full-image" src="{{parcours.fullSrc}}">
+        <p>
+          {{ parcours.text }}
+        </p>
+        <p>
+          <a href="#" class="subdued">1 J'aime</a>
+          <a href="#" class="subdued">5 Favoris</a>
+        </p>
+      </div>
+
+      <div class="item tabs tabs-secondary tabs-icon-left">
+        <a class="tab-item" href="#">
+          <i class="icon ion-thumbsup"></i>
+          J'aime
+        </a>
+        <a class="tab-item" href="#">
+          <i class="icon ion-star"></i>
+          Favori
+        </a>
+        <a class="tab-item" href="#">
+          <i class="icon ion-share"></i>
+          Partager
+        </a>
+      </div>
+
+    </div>
   </ion-content>
 </ion-view>
