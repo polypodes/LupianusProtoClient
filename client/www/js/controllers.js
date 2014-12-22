@@ -18,7 +18,7 @@ angular.module('starter.controllers', ['LocalForageModule', 'angularMoment'])
 .controller('AppCtrl', ['$scope', '$localForage', '$ionicModal', '$timeout', 'moment', function($scope, $localForage, $ionicModal, $timeout, moment) {
   // Form data for the login modal
   $scope.syncData = {};
-  $scope.dateFormat = 'dddd, MMMM Do YYYY, H:mm:ss';
+  $scope.dateFormat = 'dddd Do MMMM YYYY, H:mm:ss';
   $scope.dateLang = 'fr';
 
   // Create the login modal that we will use later
