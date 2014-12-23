@@ -1,5 +1,10 @@
 angular.module('starter.controllers', ['LocalForageModule', 'angularMoment'])
-
+.factory('Carte', function(){
+    return { carte: [],
+    empty: function(){
+      this.carte.length = 0;
+    }};
+})
 .constant('angularMomentConfig', {
    preprocess: 'unix', // optional
    timezone: 'Europe/London' // optional
@@ -15,8 +20,10 @@ angular.module('starter.controllers', ['LocalForageModule', 'angularMoment'])
   $localForageProvider.setNotify(true, true); // itemSet, itemRemove;
 }])
 
-.controller('AppCtrl', ['$scope', '$localForage', '$ionicModal', '$timeout', 'moment', '$http', function($scope, $localForage, $ionicModal, $timeout, moment, $http) {
+.controller('AppCtrl', ['$scope', '$localForage', '$ionicModal', '$timeout', 'moment', '$http', '$q', 'Carte',
+      function($scope, $localForage, $ionicModal, $timeout, moment, $http, $q, Carte) {
   // Form data for the login modal
+  var app = this; // then, app.synCata, etc...
   $scope.syncData = {};
   $scope.dateFormat = 'dddd Do MMMM YYYY, H:mm:ss';
   $scope.dateLang = 'fr';
@@ -31,7 +38,7 @@ angular.module('starter.controllers', ['LocalForageModule', 'angularMoment'])
   // Triggered in the login modal to close it
   $scope.closeSync = function() {
     $scope.modal.hide();
-    window.location.reload();
+    //window.location.reload();
   };
 
   // Open the sync modal
@@ -48,6 +55,7 @@ angular.module('starter.controllers', ['LocalForageModule', 'angularMoment'])
   // Perform the trash action
   $scope.doTrash = function() {
     $localForage.clear().then(function () {
+      Carte.empty();
       $scope.lastSyncDate = '';
       console.log('clear done.');
     });
@@ -91,11 +99,20 @@ angular.module('starter.controllers', ['LocalForageModule', 'angularMoment'])
     $http.get(remote).
         success(function(data, status, headers, config) {
           $localForage.clear();
+          Carte.empty();
+          console.log('Carte is now empty:', Carte.carte);
+          var carte = [];
           for(var key in data.carte){
-            $localForage.setItem(key, data.carte[key]).then(function() {
-              //...
-            });
+            carte.push($localForage.setItem(key, data.carte[key]));
           }
+          $q.all(carte).then(function(responses){
+            console.log(responses);
+            console.log('Remote sync OK');
+            responses.forEach(function(parcours){
+              Carte.carte.push(parcours);
+            })
+
+          });
         }).
         error(function(data, status, headers, config) {
           console.log('remote error', [data, status, headers, config]);
@@ -108,11 +125,7 @@ angular.module('starter.controllers', ['LocalForageModule', 'angularMoment'])
       $scope.lastSync = newSync;
       $scope.lastSyncDate = moment($scope.lastSync).format($scope.dateFormat, $scope.dateLang);
     });
-    $localForage.setItem('user','Me').then(function() {
-      $localForage.getItem('user').then(function(data) {
-        $scope.syncData = data;
-      });
-    });
+
 
     // Simulate a sync delay. Remove this and replace with your sync
     // code if using a sync system
@@ -122,7 +135,7 @@ angular.module('starter.controllers', ['LocalForageModule', 'angularMoment'])
   };
 }])
 
-.controller('CarteCtrl', ['$scope', '$localForage', function($scope, $localForage) {
+.controller('CarteCtrl', ['$scope', '$localForage', 'Carte', function($scope, $localForage, Carte) {
   /*
    $scope.carte = [
    "parcours1": { title: 'Parcours 1', id: 1, src: 'http://lorempixel.com/160/160/city' },
@@ -132,9 +145,10 @@ angular.module('starter.controllers', ['LocalForageModule', 'angularMoment'])
    "parcours5": { title: 'Parcours 5', id: 5, src: 'http://lorempixel.com/160/160/transport' }
    ];
    */
-  $scope.carte = [];
+      console.log('carteController instance OK');
+  $scope.carte = Carte.carte;
   $localForage.iterate(function(value, key) {
-    $scope.carte.push(value);
+    Carte.carte.push(value);
   }, function() {
     console.log('Iteration has completed', $scope.carte);
   });
