@@ -1,9 +1,14 @@
 angular.module('starter.controllers', ['LocalForageModule', 'angularMoment'])
-.factory('Carte', function(){
-    return { carte: [],
+.factory('Carte', function($localForage){
+  return {
+    carte: [],
     empty: function(){
       this.carte.length = 0;
-    }};
+    },
+    get: function(item) {
+      return $localForage.getItem(item);
+    }
+  };
 })
 .constant('angularMomentConfig', {
    preprocess: 'unix', // optional
@@ -97,28 +102,28 @@ angular.module('starter.controllers', ['LocalForageModule', 'angularMoment'])
 
     var remote = 'http://www.corsproxy.com/polypodes.github.io/LupianusProtoClient/fake/data.json';
     $http.get(remote).
-        success(function(data, status, headers, config) {
-          $localForage.clear();
-          Carte.empty();
-          console.log('Carte is now empty:', Carte.carte);
-          var carte = [];
-          for(var key in data.carte){
-            carte.push($localForage.setItem(key, data.carte[key]));
-          }
-          $q.all(carte).then(function(responses){
-            console.log(responses);
-            console.log('Remote sync OK');
-            responses.forEach(function(parcours){
-              Carte.carte.push(parcours);
-            })
+      success(function(data, status, headers, config) {
+        $localForage.clear();
+        Carte.empty();
+        console.log('Carte is now empty:', Carte.carte);
+        var carte = [];
+        for(var key in data.carte){
+          carte.push($localForage.setItem(key, data.carte[key]));
+        }
+        $q.all(carte).then(function(responses){
+          console.log(responses);
+          console.log('Remote sync OK');
+          responses.forEach(function(parcours){
+            Carte.carte.push(parcours);
+          })
 
-          });
-        }).
-        error(function(data, status, headers, config) {
-          console.log('remote error', [data, status, headers, config]);
-          // called asynchronously if an error occurs
-          // or server returns response with an error status.
         });
+      }).
+      error(function(data, status, headers, config) {
+        console.log('remote error', [data, status, headers, config]);
+        // called asynchronously if an error occurs
+        // or server returns response with an error status.
+      });
 
     var newSync = new Date();
     $localForage.setItem('lastSync', newSync).then(function() {
@@ -152,15 +157,24 @@ angular.module('starter.controllers', ['LocalForageModule', 'angularMoment'])
   }, function() {
     console.log('Iteration has completed', $scope.carte);
   });
-
 }])
 
-.controller('ParcoursCtrl', function($scope, $stateParams) {
-  $scope.parcours =
-  {
-    title: 'Parcours 1',
-    id: 1,
-    fullSrc: 'http://lorempixel.com/540/304/',
-    text: "This is a \"Facebook\" styled Card. The header is created from a Thumbnail List item, the content is from a card-body consisting of an image and paragraph text. The footer consists of tabs, icons aligned left, within the card-footer."
-  };
+.controller('ParcoursCtrl', function($scope, $localForage, $stateParams, Carte) {
+
+  var itemName = 'parcours' + $stateParams.parcoursId;
+  Carte.get(itemName).then(function(data) {
+    $scope.parcours = {
+      title: data.title,
+      id: data.id,
+      fullSrc: data.src
+    };
+  });
+})
+
+.controller('SearchCtrl', function($scope) {
+  console.log('search controller loaded');
+})
+
+.controller('AproposCtrl', function($scope) {
+  console.log('AproposCtrl controller loaded');
 });

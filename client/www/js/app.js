@@ -12,6 +12,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'angularMoment'])
   timezone: 'Europe/Paris' // optional
 })
 
+// register work which should be performed when the injector is done loading all modules
 .run(function($ionicPlatform, amMoment) {
   amMoment.changeLocale('fr');
   $ionicPlatform.ready(function() {
@@ -55,7 +56,28 @@ angular.module('starter', ['ionic', 'starter.controllers', 'angularMoment'])
         controller: 'ParcoursCtrl'
       }
     }
+  })
+
+  .state('app.search', {
+     url: "/search",
+     views: {
+       'menuContent': {
+         templateUrl: "templates/search.html",
+         controller: 'SearchCtrl'
+       }
+     }
+   })
+
+  .state('app.apropos', {
+    url: "/apropos",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/apropos.html",
+        controller: 'AproposCtrl'
+      }
+    }
   });
+
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/carte');
 });
